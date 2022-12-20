@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import { useDispatch } from 'react-redux';
-import { setFilter } from 'redux/filter';
+import { setFilter } from 'redux/filterSlice';
 
 export default function PhonebookFilter({ filter }) {
   const filterId = nanoid();

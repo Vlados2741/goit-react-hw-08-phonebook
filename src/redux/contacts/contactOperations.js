@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import Notiflix from 'notiflix';
-import { instance } from 'redux/auth/authOperations';
+import { instance } from '../authorization/authOperations';
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchAll',
@@ -18,15 +17,6 @@ export const addContact = createAsyncThunk(
   'contacts/addContact',
   async (data, thunkAPI) => {
     try {
-      Notiflix.Report.success('Super !', ` New contact added!`, 'Close', {
-        svgSize: '200px',
-        titleFontSize: '24px',
-        messageFontSize: '20px',
-        buttonFontSize: '16px',
-        width: '300px',
-        backOverlay: true,
-        backOverlayClickToClose: true,
-      });
       const response = await instance.post('/contacts', data);
       return response.data;
     } catch (error) {

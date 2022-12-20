@@ -1,11 +1,40 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import { useDispatch } from 'react-redux';
-import { addContact } from 'redux/operations';
+import { addContact } from 'redux/contacts/contactOperations';
+import Button from '@mui/material/Button';
+import { TextField } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-export default function Phonebook() {
+const CssTextField = styled(TextField)({
+  '& .MuiInputBase-input': {
+    width: '320px',
+    color: '#000',
+  },
+  '& .MuiFormLabel-root': {
+    color: '#000',
+  },
+  '& label.Mui-focused': {
+    color: '#000',
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: '#000',
+      boxShadow: '0px 5px 10px 6px rgba(139, 211, 225, 0.2)',
+    },
+    '&:hover fieldset': {
+      borderColor: '#000',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#000',
+    },
+  },
+});
+
+export default function PhonebookForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const [gender, setGender] = useState('');
 
   const dispatch = useDispatch();
 
@@ -21,6 +50,10 @@ export default function Phonebook() {
         setNumber(value);
         break;
 
+      case 'gender':
+        setGender(value);
+        break;
+
       default:
         return;
     }
@@ -31,9 +64,11 @@ export default function Phonebook() {
     const contact = {
       name,
       number,
+      gender,
     };
     setName('');
     setNumber('');
+    setGender('');
     dispatch(addContact(contact));
   };
 
@@ -41,32 +76,54 @@ export default function Phonebook() {
   let numberId = nanoid();
 
   return (
-    <form onSubmit={handleSabmit}>
-      <label htmlFor={nameId}>Name</label>
-      <input
-        type="text"
-        name="name"
+    <form className="phonebook-form" onSubmit={handleSabmit}>
+      <CssTextField
+        margin="normal"
+        label="Name"
+        variant="outlined"
+        onChange={handleChange}
         id={nameId}
         value={name}
-        onChange={handleChange}
+        name="name"
         autoComplete="off"
         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-        title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
         required
       />
-      <label htmlFor={numberId}>Number</label>
-      <input
-        type="tel"
-        name="number"
+      <CssTextField
+        margin="normal"
+        label="Number"
+        variant="outlined"
+        onChange={handleChange}
         id={numberId}
         value={number}
-        onChange={handleChange}
+        type="tel"
+        name="number"
         autoComplete="off"
         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-        title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
         required
       />
-      <button type="submit">Add contact</button>
+      <Button
+        type="submit"
+        variant="contained"
+        sx={{
+          width: '100%',
+          marginTop: '15px',
+          fontSize: '24px',
+          fontWeight: '700',
+          color: '#fff',
+          backgroundColor: '#000',
+          border: '2px solid #fff',
+          boxShadow: '0px 0px 10px 10px rgba(255, 162, 0, 0.2) inset',
+          borderRadius: '25px',
+          '&.MuiButton-root:hover': {
+            color: '#000',
+            backgroundColor: '#fff',
+            boxShadow: '0px 5px 10px 6px rgba(139, 211, 225, 0.4)',
+          },
+        }}
+      >
+        Add contact
+      </Button>
     </form>
   );
 }
